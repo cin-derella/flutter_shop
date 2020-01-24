@@ -70,10 +70,20 @@ class Products with ChangeNotifier {
       description: product.description,
       price: product.price,
       imageUrl: product.imageUrl,
-      id:DateTime.now().toString(),
+      id: DateTime.now().toString(),
     );
     _items.add(newProduct);
     //_items.insert(0, newProduct);
     notifyListeners();
+  }
+
+  void updateProduct(String id, Product newProduct) {
+    final prodIndex = _items.indexWhere((prod) => prod.id == id);
+    if (prodIndex >= 0) {
+      _items[prodIndex] = newProduct;
+      notifyListeners();
+    } else {
+      print('.....');
+    }
   }
 }

@@ -66,21 +66,20 @@ class Products with ChangeNotifier {
   //   notifyListeners();
   // }
 
-  Future<void> addProduct(Product product) {
-    const url = 'https://flutter-shop-1648d.firebaseio.com/products.json';
-    return http
-        .post(
-      url,
-      body: json.encode({
-        'title': product.title,
-        'description': product.description,
-        'price': product.price,
-        'imageUrl': product.imageUrl,
-        'isFavorite': product.isFavorite,
-      }),
-    )
+  Future<dynamic> addProduct(Product product) {
+    const url = 'https://flutter-shop-1648d.firebaseio.com/products';
+    /*
+    Future<dynamic> resp = http
+        .post(url,
+            body: json.encode({
+              'title': product.title,
+              'description': product.description,
+              'price': product.price,
+              'imageUrl': product.imageUrl,
+              'isFavorite': product.isFavorite,
+            }))
         .then((response) {
-         // print(json.decode(response.body));
+      // print(json.decode(response.body));
       final newProduct = Product(
         title: product.title,
         description: product.description,
@@ -91,11 +90,40 @@ class Products with ChangeNotifier {
       _items.add(newProduct);
       //_items.insert(0, newProduct);
       notifyListeners();
-    }).catchError((error){
+    });
+
+    Future<dynamic> err = resp.catchError((error) {
       print(error);
       throw error;
     });
-   
+
+    return err;
+    */
+    return http
+        .post(url,
+            body: json.encode({
+              'title': product.title,
+              'description': product.description,
+              'price': product.price,
+              'imageUrl': product.imageUrl,
+              'isFavorite': product.isFavorite,
+            }))
+        .then((response) {
+      // print(json.decode(response.body));
+      final newProduct = Product(
+        title: product.title,
+        description: product.description,
+        price: product.price,
+        imageUrl: product.imageUrl,
+        id: json.decode(response.body)['name'],
+      );
+      _items.add(newProduct);
+      //_items.insert(0, newProduct);
+      notifyListeners();
+    }, onError: (error) {
+      print(error);
+      throw error;
+    }); //.catchError();
   }
 
   void updateProduct(String id, Product newProduct) {

@@ -66,7 +66,7 @@ class Products with ChangeNotifier {
   //   notifyListeners();
   // }
 
-  Future<dynamic> addProduct(Product product) {
+  Future<dynamic> addProduct(Product product) async {
     const url = 'https://flutter-shop-1648d.firebaseio.com/products';
     /*
     Future<dynamic> resp = http
@@ -99,17 +99,15 @@ class Products with ChangeNotifier {
 
     return err;
     */
-    return http
-        .post(url,
-            body: json.encode({
-              'title': product.title,
-              'description': product.description,
-              'price': product.price,
-              'imageUrl': product.imageUrl,
-              'isFavorite': product.isFavorite,
-            }))
-        .then((response) {
-      // print(json.decode(response.body));
+    try {
+      final response = await http.post(url,
+          body: json.encode({
+            'title': product.title,
+            'description': product.description,
+            'price': product.price,
+            'imageUrl': product.imageUrl,
+            'isFavorite': product.isFavorite,
+          }));
       final newProduct = Product(
         title: product.title,
         description: product.description,
@@ -120,10 +118,15 @@ class Products with ChangeNotifier {
       _items.add(newProduct);
       //_items.insert(0, newProduct);
       notifyListeners();
-    }, onError: (error) {
+      // }, onError: (error) {
+      //.then((response) {
+      // print(json.decode(response.body));
+    } catch (error) {
       print(error);
       throw error;
-    }); //.catchError();
+    }
+
+    //.catchError();
   }
 
   void updateProduct(String id, Product newProduct) {

@@ -99,7 +99,7 @@ class _AuthCardState extends State<AuthCard> {
   var _isLoading = false;
   final _passwordController = TextEditingController();
 
-  Future<void> _submit()async {
+  Future<void> _submit() async {
     if (!_formKey.currentState.validate()) {
       return;
     }
@@ -109,6 +109,10 @@ class _AuthCardState extends State<AuthCard> {
     });
 
     if (_authMode == AuthMode.Login) {
+      await Provider.of<Auth>(context, listen: false).login(
+        _authData['email'],
+        _authData['password'],
+      );
     } else {
       await Provider.of<Auth>(context, listen: false).signup(
         _authData['email'],

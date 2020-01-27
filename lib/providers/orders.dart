@@ -31,11 +31,11 @@ class Orders with ChangeNotifier {
     final url = 'https://flutter-shop-1648d.firebaseio.com/orders.json?auth=$authToken';
     final response = await http.get(url);
     final List<OrderItem> loadedOrders = [];
-    final extractData = json.decode(response.body) as Map<String, dynamic>;
-    if (extractData == null) {
+    final extractedData = json.decode(response.body) as Map<String, dynamic>;
+    if (extractedData == null) {
       return;
     }
-    extractData.forEach((orderId, orderData) {
+    extractedData.forEach((orderId, orderData) {
       loadedOrders.add(
         OrderItem(
           id: orderId,

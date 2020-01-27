@@ -16,7 +16,7 @@ class ProductItem extends StatelessWidget {
   Widget build(BuildContext context) {
     final product = Provider.of<Product>(context, listen: false);
     final cart = Provider.of<Cart>(context, listen: false);
-    final authData = Provider.of<Auth>(context,listen: false);
+    final authData = Provider.of<Auth>(context, listen: false);
 
     print('product rebuild');
     return ClipRRect(
@@ -27,9 +27,10 @@ class ProductItem extends StatelessWidget {
             Navigator.of(context).pushNamed(ProductDetailScreen.routeName,
                 arguments: product.id);
           },
-          child: Image.network(
-            product.imageUrl,
-            fit: BoxFit.cover,
+          child: FadeInImage(
+            placeholder: AssetImage('assets/images/product_placeholder.jpg'),
+            image: NetworkImage(product.imageUrl),
+            fit:BoxFit.cover,
           ),
         ),
         footer: GridTileBar(
@@ -40,7 +41,7 @@ class ProductItem extends StatelessWidget {
               icon: Icon(
                   product.isFavorite ? Icons.favorite : Icons.favorite_border),
               onPressed: () {
-                product.toggleFavoritesStatus(authData.token,authData.userId);
+                product.toggleFavoritesStatus(authData.token, authData.userId);
               },
             ),
             child: Text('Never changes!'),
@@ -59,10 +60,12 @@ class ProductItem extends StatelessWidget {
                 SnackBar(
                   content: Text('Item added to cart!'),
                   duration: Duration(seconds: 2),
-                  action: SnackBarAction(label: 'UNDO',onPressed: (){
-                    cart.removeSingleItem(product.id);
-
-                  },),
+                  action: SnackBarAction(
+                    label: 'UNDO',
+                    onPressed: () {
+                      cart.removeSingleItem(product.id);
+                    },
+                  ),
                 ),
               );
             },

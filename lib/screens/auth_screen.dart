@@ -119,6 +119,13 @@ class _AuthCardState extends State<AuthCard>
     _heightAnimation.addListener(() => setState(() {}));
   }
 
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+    _controller.dispose();
+  }
+
   void _showErrorDialog(String message) {
     showDialog(
       context: context,
@@ -204,14 +211,17 @@ class _AuthCardState extends State<AuthCard>
         borderRadius: BorderRadius.circular(8),
       ),
       elevation: 8.0,
-      child: Container(
-        //height: _authMode == AuthMode.Signup ? 320 : 260,
-        height: _heightAnimation.value.height,
-        constraints: BoxConstraints(
-          minHeight: _heightAnimation.value.height,
-        ),
-        width: deviceSize.width * 0.75,
-        padding: EdgeInsets.all(16),
+      child: AnimatedBuilder(
+        animation: _heightAnimation,
+        builder: (ctx, ch) => Container(
+            //height: _authMode == AuthMode.Signup ? 320 : 260,
+            height: _heightAnimation.value.height,
+            constraints: BoxConstraints(
+              minHeight: _heightAnimation.value.height,
+            ),
+            width: deviceSize.width * 0.75,
+            padding: EdgeInsets.all(16),
+            child: ch),
         child: Form(
           key: _formKey,
           child: SingleChildScrollView(

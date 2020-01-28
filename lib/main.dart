@@ -13,6 +13,7 @@ import './screens/edit_product_screen.dart';
 import './screens/auth_screen.dart';
 import './providers/auth.dart';
 import './screens/splash_screen.dart';
+import './helpers/custom_route.dart';
 
 void main() => runApp(MyApp());
 
@@ -48,6 +49,10 @@ class MyApp extends StatelessWidget {
             theme: ThemeData(
               primaryColor: Colors.purple,
               accentColor: Colors.deepOrange,
+              pageTransitionsTheme: PageTransitionsTheme(builders: {
+                TargetPlatform.android:CustomPageTransitionBuilder(),
+                TargetPlatform.iOS:CustomPageTransitionBuilder(),
+              })
             ),
             home: auth.isAuth
                 ? ProductsOverviewScreen()
